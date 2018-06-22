@@ -326,6 +326,167 @@ public class GUI extends JFrame{
 		});
 		
 		
+		addbutton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				JPanel pane = new JPanel(); 
+				JTextField NameField = new JTextField(20);
+			    JTextField SceneField = new JTextField() ; 
+			    JTextField AgeField = new JTextField(20);
+				JTextField TelephoneField = new JTextField(20);
+			    JTextField CityField = new JTextField(20);
+				JTextField allergiesAndDrugsField = new JTextField(20) ; 
+				JTextField judgmentField = new JTextField(20);
+				
+				JButton registerButton = new JButton("ΕΓΓΡΑΦΗ") ; 
+				JDialog jd=new JDialog();
+				String [] genders = { "ΑΓΟΡΙ", "ΚΟΡΙΤΣΙ" };
+				JComboBox<String> GenderBox = new JComboBox<String>(genders);
+				String [] vehicles = { "ΑΥΤΟΚΙΝΗΤΟ", "ΛΕΩΦΟΡΕΙΟ" };
+				JComboBox<String> TransposrtBox = new JComboBox<String>(vehicles);
+				String [] status = { "ΚΑΤΑΣΚΗΝΩΤΗΣ", "ΟΜΑΔΑΡΧΗΣ" };
+				JComboBox<String> statusbox = new JComboBox<String>(status);
+				
+				pane.setLayout(new GridLayout(19, 1,5,0));
+				pane.add(new JLabel("ΟΝΟΜΑΤΕΠΩΝΥΜΟ:")) ; 
+				pane.add(NameField) ; 
+				pane.add(new JLabel("ΣΚΗΝΗ:")) ; 
+				pane.add(SceneField) ; 
+				pane.add(new JLabel("ΗΛΙΚΙΑ:")) ; 
+				pane.add(AgeField) ; 
+				pane.add(new JLabel("ΤΗΛΕΦΩΝΟ:")) ; 
+				pane.add(TelephoneField) ; 
+				pane.add(new JLabel("ΠΟΛΗ:")) ; 
+				pane.add(CityField) ; 
+				pane.add(new JLabel("ΜΕΣΟ ΜΕΤΑΦOΡΑΣ:")) ; 
+				pane.add(TransposrtBox) ; 
+				pane.add(new JLabel("ΦΥΛΟ:")) ; 
+				pane.add(GenderBox) ; 
+				pane.add(new JLabel("ΑΛΕΡΓΕΙΕΣ & ΦΑΡΜΑΚΑ:")) ;
+				pane.add(allergiesAndDrugsField) ; 
+				pane.add(new JLabel("ΕΚΔΙΚΑΣΙΜΟΣ:")) ; 
+				pane.add(judgmentField) ; 
+				pane.add(new JLabel("ΙΔΙΟΤΗΤΑ:")) ; 
+				pane.add(statusbox);
+				
+				
+				
+				registerButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						
+						 String fullname = NameField.getText();
+						 String scene =  SceneField.getText();
+						 String age = AgeField.getText() ; 
+						 String telephone = TelephoneField.getText();
+						 String cityName = CityField.getText();
+						 int vehicle = TransposrtBox.getSelectedIndex(); 
+						 int gender = GenderBox.getSelectedIndex() ; 
+						 String allergiesAndDrugs = allergiesAndDrugsField.getText(); 
+						 String judgment = judgmentField.getText();	
+						 int status1 = statusbox.getSelectedIndex(); 
+						 
+						 if(!fullname.isEmpty()  &&  !scene.isEmpty() && !age.isEmpty() &&
+						!telephone.isEmpty()  && !cityName.isEmpty() && gender!= -1 && vehicle != -1 && !allergiesAndDrugs.isEmpty()
+						 && !judgment.isEmpty() && status1 != -1 )
+						 {
+							 boolean gender1 ; 
+							  if(gender==1)
+								  gender1 = true ; 
+							  else 
+								  gender1 = false ; 
+							  
+							  String vehicle1 ; 
+							  if(vehicle==0)
+								  vehicle1 = "ΑΥΤΟΚΙΝΗΤΟ"; 
+							  else 
+								  vehicle1 = "ΛΕΩΦΟΡΕΙΟ" ; 
+							  
+							  try {
+								  int age1 = Integer.parseInt(age); 
+								  int scene1 = Integer.parseInt(scene) ; 
+								  if(!reg.isCamperOrLeader(fullname, scene1, age1)) {
+									  
+									  if(status1 == 0)
+										  reg.scenes.get(scene1).getCampers().add(new Camper(fullname, telephone, cityName, age1, vehicle1, gender1, allergiesAndDrugs, judgment)) ; 
+									  else
+										  reg.scenes.get(scene1).getLeaders().add(new Teamleader(fullname, telephone, cityName, age1, vehicle1, gender1, allergiesAndDrugs, judgment, scene1));
+									  
+									  JOptionPane.showMessageDialog(pane, "ΕΓΓΡΑΦΗ ΟΛΟΚΛΗΡΩΘΗΚΕ");
+									  
+								      //Serialization.SaveToFile(reg);	
+									  Object[] options = {"ΝΑΙ",
+					                    "ΟΧΙ"};
+										int n = JOptionPane.showOptionDialog(panel,
+												"", "ΘΕΛΕΤΕ ΚΑΙ ΑΛΛΗ ΕΓΓΡΑΦΗ",JOptionPane.YES_NO_CANCEL_OPTION,
+										JOptionPane.QUESTION_MESSAGE,null,options,  options[1]);
+										if(n==0){
+											 NameField.setText("");
+										     SceneField.setText("");
+										     AgeField.setText("");
+											 TelephoneField.setText("");
+										     CityField.setText("");
+											 allergiesAndDrugsField.setText("");
+											 judgmentField.setText("");
+											
+											
+										}
+										else
+											jd.dispose() ; 
+										
+								      
+								  }						  
+								  else 
+									  JOptionPane.showMessageDialog(pane, "ΗΔΗ ΕΙΠΑΡΧΕΙ");				  
+								  
+									  
+								  
+								  }
+							  catch (Exception e1) {
+									// TODO: handle exception
+									  JOptionPane.showMessageDialog(pane, "ΛΑΘΟΣ ΑΡΙΘΜΟΣ ΣΚΗΝΗΣ Ή ΗΛΙΚΙΑ");
+								   }
+
+						 }
+						 else 
+							 JOptionPane.showMessageDialog(pane, "ΔΕΝ ΣΥΜΛΗΡΩΣΑΤΕ ΣΩΣΤΑ ΤΑ ΣΤΟΙΧΕΙΑ");
+						 
+						
+					}
+				});
+				pane.add(registerButton);
+				
+				
+				jd.add(pane);
+				jd.setVisible(true);
+				jd.setSize(250, 600);
+				jd.setLocationRelativeTo(panel);
+			}
+		});
+		
+		
+		trasferbutton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+                JDialog jd = new JDialog() ; 
+                JPanel pane = new JPanel(); 
+				JTextField SceneField = new JTextField(5);
+				JButton trasferbtn = new JButton("ΜΕΤΑΦΟΡΑ");
+					
+                
+				jd.add(pane);
+				jd.setVisible(true);
+				jd.setSize(250, 100);
+				jd.setLocationRelativeTo(panel);
+			}
+		});
 		
 		this.setSize(1600,900);
 		this.setVisible(true);

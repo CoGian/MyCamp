@@ -44,7 +44,7 @@ public class Registry {
 		
 		if(camperToRemove!=null) {
 			campers.remove(camperToRemove) ; 
-			return "Sucessfull Deletion" ; 
+			return "диацяажг епитувгс" ; 
 		}
 			
 	
@@ -62,16 +62,48 @@ public class Registry {
 		if(leadertoremove!=null) {
 			
 			leaders.remove(leadertoremove) ; 
-			return "Sucessfull Deletion" ; 
+			return "диацяажг епитувгс" ; 
 		}
 		
 		
-		return "Unsucessfull Deletion" ; 
+		return "диацяажг амепитувгс" ; 
 		
 	}
 	
 	
+	public boolean isCamperOrLeader(String name , int scene , int age)
+	{
+		ArrayList<Camper> campers = scenes.get(scene).getCampers() ;
+		ArrayList<Teamleader> leaders = scenes.get(scene).getLeaders() ;
+		
+		for(Camper c : campers)
+		{
+			if(c.getFullname().equals(name)&&c.getAge() == age )
+				return true ; 
+			
+		}
+		
+		
+		for(Teamleader l : leaders)
+		{
+		
+			if(l.getFullname().equals(name)&&l.getAge() == age )
+				return true ; 
+				
+			
+		}
+		
+		return false;
+	}
 
+	public boolean isScene(int scene)
+	{
+		for(Integer key : scenes.keySet())
+		   if(key == scene)
+			   return true ;
+		
+		return false ; 
+ 	}
 	
 	
 }
