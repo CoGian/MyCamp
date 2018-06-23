@@ -61,6 +61,10 @@ public class GUI extends JFrame{
 		instructions2.setTipText("♦ΓΙΑ ΝΑ ΨΑΞΕΤΕ ΤΑ ΑΤΟΜΑ ΜΙΑΣ ΣΥΓΚΕΚΡΙΜΕΝΗΣ ΣΚΗΝΗΣ ΣΥΜΠΛΗΡΩΣΤΕ ΜΟΝΟ ΤΟΝ ΑΡΙΘΜΟ ΤΗΣ ΣΚΗΝΗΣ ");
 		JToolTip instructions3 = new JToolTip() ; 
 		instructions3.setTipText("♦ΓΙΑ ΝΑ ΔΙΑΓΡΑΨΕΤΕ ΕΝΑΝ ΚΑΤΑΣΚΗΝΩΤΗ/ΟΜΑΔΑΡΧΗ ΕΠΙΛΕΞΤΕ ΤΟ ΟΝΟΜΑΤΕΠΩΝΥΜΟ,ΤΗΝ ΣΚΗΝΗ ΚΑΙ ΤΗΝ ΗΛΙΚΙΑ ΤΟΥ ");
+		JToolTip instructions4 = new JToolTip() ; 
+		instructions4.setTipText("♦ΓΙΑ ΝΑ ΜΕΤΑΦΕΡΕΤΕ ΕΝΑΝ ΚΑΤΑΣΚΗΝΩΤΗ/ΟΜΑΔΑΡΧΗ ΕΠΙΛΕΞΤΕ ΤΟ ΟΝΟΜΑΤΕΠΩΝΥΜΟ,ΤΗΝ ΣΚΗΝΗ ΚΑΙ ΤΗΝ ΗΛΙΚΙΑ ΤΟΥ ");
+		JToolTip instructions5 = new JToolTip() ; 
+		instructions5.setTipText("♦ΓΙΑ ΝΑ ΔΗΜΙΟΥΡΓΗΣΕΤΕ ΜΙΑ ΚΑΙΝΟΥΡΙΑ ΣΚΗΝΗ ΑΡΚΕΙ ΝΑ ΠΡΟΣΘΕΣΕΤΕ ΤΟΝ ΟΜΑΔΑΡΧΗ ΤΗΣ ΣΚΗΝΗΣ ");
 		
 		searchpanel.add(instructions1);
 		searchpanel.add(Box.createRigidArea(new Dimension(1600,5)));
@@ -111,6 +115,10 @@ public class GUI extends JFrame{
 		listpanel.add(new JScrollPane(judgmentlist)) ; 
 		
 		buttonpanel.add(instructions3);
+		buttonpanel.add(Box.createRigidArea(new Dimension(1600,5)));
+		buttonpanel.add(instructions4);
+		buttonpanel.add(Box.createRigidArea(new Dimension(1600,5)));
+		buttonpanel.add(instructions5);
 		buttonpanel.add(Box.createRigidArea(new Dimension(1600,50))) ; 
 		buttonpanel.add(addbutton);
 		buttonpanel.add(Box.createRigidArea(new Dimension(50,0))) ; 
@@ -350,7 +358,7 @@ public class GUI extends JFrame{
 				String [] status = { "ΚΑΤΑΣΚΗΝΩΤΗΣ", "ΟΜΑΔΑΡΧΗΣ" };
 				JComboBox<String> statusbox = new JComboBox<String>(status);
 				
-				pane.setLayout(new GridLayout(19, 1,5,0));
+				pane.setLayout(new GridLayout(22, 1,5,0));
 				pane.add(new JLabel("ΟΝΟΜΑΤΕΠΩΝΥΜΟ:")) ; 
 				pane.add(NameField) ; 
 				pane.add(new JLabel("ΣΚΗΝΗ:")) ; 
@@ -373,7 +381,7 @@ public class GUI extends JFrame{
 				pane.add(statusbox);
 				
 				
-				
+				//see if camper exists already , if it is a leader and scene doent exist it creates the scene 
 				registerButton.addActionListener(new ActionListener() {
 					
 					@Override
@@ -410,12 +418,20 @@ public class GUI extends JFrame{
 							  try {
 								  int age1 = Integer.parseInt(age); 
 								  int scene1 = Integer.parseInt(scene) ; 
+								  if(status1 == 1 && !reg.isScene(scene1) )
+								  {
+									  reg.scenes.put(scene1, new Scene() ) ;
+									  JOptionPane.showMessageDialog(pane, "ΔΗΜΙΟΥΡΓΗΘΗΚΕ Η ΣΚΗΝΗ:" + scene);
+								  }
 								  if(!reg.isCamperOrLeader(fullname, scene1, age1)) {
+									 
 									  
 									  if(status1 == 0)
 										  reg.scenes.get(scene1).getCampers().add(new Camper(fullname, telephone, cityName, age1, vehicle1, gender1, allergiesAndDrugs, judgment)) ; 
-									  else
+									  else 
 										  reg.scenes.get(scene1).getLeaders().add(new Teamleader(fullname, telephone, cityName, age1, vehicle1, gender1, allergiesAndDrugs, judgment, scene1));
+									  
+										  
 									  
 									  JOptionPane.showMessageDialog(pane, "ΕΓΓΡΑΦΗ ΟΛΟΚΛΗΡΩΘΗΚΕ");
 									  
@@ -459,6 +475,7 @@ public class GUI extends JFrame{
 						
 					}
 				});
+				pane.add(Box.createRigidArea(new Dimension(250,5)));
 				pane.add(registerButton);
 				
 				
@@ -477,9 +494,59 @@ public class GUI extends JFrame{
 				// TODO Auto-generated method stub
                 JDialog jd = new JDialog() ; 
                 JPanel pane = new JPanel(); 
-				JTextField SceneField = new JTextField(5);
-				JButton trasferbtn = new JButton("ΜΕΤΑΦΟΡΑ");
+				JTextField SceneField = new JTextField(2);
+				JButton confirmationbtn = new JButton("ΕΠΙΒΕΒΑΙΩΣΗ");
+				
+				pane.add(new JLabel("ΜΕΤΑΦΟΡΑ ΣΤΗΝ ΣΚΗΝΗ:"));
+                pane.add(SceneField);
+                pane.add(confirmationbtn);
+                
+                confirmationbtn.addActionListener(new ActionListener() {
 					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						
+						if(!SceneField.getText().isEmpty())
+						{
+							Integer scene1 = Integer.parseInt(SceneField.getText()) ; 
+							if(reg.isScene(scene1))
+							{
+								String name = fullnamelist.getSelectedValue() ; 
+								String age = agelist.getSelectedValue();
+								String scene =scenelist.getSelectedValue() ; 
+								if(name != null && age !=null  && scene!=null)
+								{
+									if(name.contains("ΟΜΑΔΑΡΧΗΣ")){
+										String[] namesList = name.split(","); 
+										name = namesList[0] ;
+									}
+									
+								
+									JOptionPane.showMessageDialog(panel, reg.trasfer(name, Integer.parseInt(scene), Integer.parseInt(age),scene1)) ; 
+									int  i = fullnamelist.getSelectedIndex() ; 
+									fullnameModel.removeElementAt(i);
+									sceneModel.removeElementAt(i);
+									ageModel.removeElementAt(i);
+									telephoneModel.removeElementAt(i);
+									cityModel.removeElementAt(i);
+									transportModel.removeElementAt(i);
+									genderModel.removeElementAt(i);
+									allergiesAndDrugsModel.removeElementAt(i);
+									judgmentModel.removeElementAt(i);
+									jd.dispose();
+								}
+							
+							
+							}
+							else
+								JOptionPane.showMessageDialog(panel,"ΔΕΝ ΕΙΠΑΡΧΕΙ Η ΣΚΗΝΗ "  ); 
+						}
+						else
+							JOptionPane.showMessageDialog(panel,"ΣΥΜΠΛΗΡΩΣΤΕ ΣΩΣΤΑ ΤΑ ΣΤΟΙΧΕΙΑ" ); 
+					}
+					
+				});
                 
 				jd.add(pane);
 				jd.setVisible(true);

@@ -18,7 +18,9 @@ public class Main {
 		campers1.add(new Camper("иыайгл йалпеягс", "6982233611", "лецакг бокбг", 10, "аутойимгто",false, "йамема", "йамема") ); 
 		
 			
-		Scene scene1 = new Scene(leaders1, campers1) ; 
+		Scene scene1 = new Scene() ; 
+		scene1.setCampers(campers1);
+		scene1.setLeaders(leaders1);
 		reg.scenes.put(1, scene1) ; 
 		
 		ArrayList<Teamleader> leaders2 = new ArrayList<>()  ; 
@@ -31,8 +33,9 @@ public class Main {
 		campers2.add(new Camper("ваяийкеиа кеутеяоу", "6982233611", "лийяг бокбг", 10, "кеыжыяио",true, "йамема", "йамема") ); 
 		campers2.add(new Camper("ахгма мамама", "6982233611", "лецакг бокбг", 10, "аутойимгто",true, "йамема", "йамема") ); 
 		campers2.add(new Camper("екпида цеяасилиоу", "6982233611", "вакастяа", 10, "аутойимгто",true, "йамема", "йамема") ); 
-		Scene scene2 = new Scene(leaders2, campers2) ; 
-	    
+		Scene scene2 = new Scene() ; 
+		scene2.setCampers(campers2);
+		scene2.setLeaders(leaders2);
 		
 		reg.scenes.put(2, scene2);
 		

@@ -6,10 +6,8 @@ public class Scene {
 	private ArrayList<Teamleader> leaders = new ArrayList<>()  ; 
 	private ArrayList<Camper> campers = new ArrayList<>() ;
 	
-	public Scene(ArrayList<Teamleader> leaders, ArrayList<Camper> campers) {
+	public Scene() {
 		
-		this.leaders = leaders;
-		this.campers = campers;
 	}
 
 	public ArrayList<Teamleader> getLeaders() {
@@ -27,6 +25,7 @@ public class Scene {
 	public void setCampers(ArrayList<Camper> campers) {
 		this.campers = campers;
 	} 
+	
 	
 	
 	

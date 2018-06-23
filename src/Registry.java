@@ -106,4 +106,49 @@ public class Registry {
  	}
 	
 	
+	public String trasfer(String name , int scene , int age,int scene2)
+	{
+		ArrayList<Camper> campers = scenes.get(scene).getCampers() ;
+		ArrayList<Teamleader> leaders = scenes.get(scene).getLeaders() ;
+		ArrayList<Camper> campers2 = scenes.get(scene2).getCampers() ;
+		ArrayList<Teamleader> leaders2 = scenes.get(scene2).getLeaders() ;
+		Camper camperToTrasfer = null ; 
+		for(Camper c : campers)
+		{
+			if(c.getFullname().equals(name)&&c.getAge() == age )
+				camperToTrasfer = c ; 	
+			
+		}
+		
+		
+		if(camperToTrasfer!=null) {
+			campers2.add(camperToTrasfer);
+			campers.remove(camperToTrasfer) ; 
+			return "METAжояа епитувгс" ; 
+		}
+			
+	
+			
+		Teamleader leadertoTrasfer = null ; 
+		for(Teamleader l : leaders)
+		{
+		
+			if(l.getFullname().equals(name)&&l.getAge() == age )
+				leadertoTrasfer   = l ; 
+				
+			
+		}
+		
+		if(leadertoTrasfer!=null) {
+			leaders2.add(leadertoTrasfer); 
+			leaders.remove(leadertoTrasfer) ; 
+			return "летажояа епитувгс" ; 
+		}
+		
+		
+		return "летажояа амепитувгс" ; 
+		
+	}
+	
+	
 }
